@@ -53,7 +53,7 @@ create table playlistvideos(
 
 playlistId int not null,
 videoId int not null,
-constraint fk_playlist_video foreign key(videoId)
+constraint fk_pl_video foreign key(videoId)
 references television.video(videoId)
 on delete no action
 on update no action
@@ -69,10 +69,15 @@ create table channelvideos(
 
 channelId int not null,
 videoId int not null,
-constraint fk_channel_video foreign key(videoId)
-references television.video(videoId),
+constraint fk_chn_video foreign key(videoId)
+references television.video(videoId)
+on delete no action
+on update no action
+,
 constraint fk_tv_channel foreign key(channelId)
 references television.channel(channelId)
+on delete no action
+on update no action
 
 );
 
@@ -122,7 +127,7 @@ insert into channelvideos values (4,2);
 
 select c.name as "channel name",v.name as "video name",ca.name as "category" from channel c, 
 video v, category ca , channelvideos chv where chv.channelId = c.channelId and 
-chv.videoId = v.videoId and v.categoryId = ca.categoryId and channelId = 1;
+chv.videoId = v.videoId and v.categoryId = ca.categoryId and c.channelId = 1;
 
 select c.name as "channel name",v.name as "video name",ca.name as "category" from channel c, 
 video v, category ca , channelvideos chv where chv.channelId = c.channelId and 
