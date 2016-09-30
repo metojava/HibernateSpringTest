@@ -8,7 +8,6 @@ create table  category(
 
 categoryId int not null auto_increment,
 name varchar(30) not null,
-
 primary key(categoryId)
 
 );
@@ -28,7 +27,12 @@ create table channel(
 
 channelId int not null auto_increment,
 name varchar(30) not null,
-primary key(channelId)
+videoId int default null, 
+primary key(channelId),
+constraint fk_channel_video foreign key(videoId)
+references television.video(videoId)
+on delete cascade
+on update cascade
 
 );
 
@@ -36,7 +40,12 @@ create table playlist(
 
 playlistId int not null auto_increment,
 name varchar(30) not null,
-primary key(playlistId)
+videoId int default null,
+primary key(playlistId),
+constraint fk_playlist_video foreign key(videoId)
+references television.video(videoId)
+on delete cascade
+on update cascade
 
 );
 
@@ -45,10 +54,14 @@ create table playlistvideos(
 playlistId int not null,
 videoId int not null,
 constraint fk_playlist_video foreign key(videoId)
-references television.video(videoId),
+references television.video(videoId)
+on delete no action
+on update no action
+,
 constraint fk_this_playlist foreign key(playlistId)
 references television.playlist(playlistId)
-
+on delete no action
+on update no action
 );
 
 
@@ -75,15 +88,15 @@ insert into video values(3,"Island of Diamonds",4);
 insert into video values(4,"Bill and diamonds",2);
 
 
-insert into channel values(1,"comedies");
-insert into channel values(2,"cartoon");
-insert into channel values(3,"scientific");
-insert into channel values(4,"movies");
+insert into channel values(1,"comedies",1);
+insert into channel values(2,"cartoon",2);
+insert into channel values(3,"scientific",3);
+insert into channel values(4,"movies",4);
 
 
-insert into playlist values(1,"Satishs playlist");
-insert into playlist values(2,"Jams's playlist");
-insert into playlist values(3,"Aruns playlist");
+insert into playlist values(1,"Satishs playlist",4);
+insert into playlist values(2,"Jams's playlist",3);
+insert into playlist values(3,"Aruns playlist",4);
 
 
 insert into playlistvideos values (1,1);
@@ -105,3 +118,14 @@ insert into channelvideos values (3,2);
 insert into channelvideos values (4,1);
 insert into channelvideos values (4,3);
 insert into channelvideos values (4,2);
+
+
+select c.name as "channel name",v.name as "video name",ca.name as "category" from channel c, 
+video v, category ca , channelvideos chv where chv.channelId = c.channelId and 
+chv.videoId = v.videoId and v.categoryId = ca.categoryId and channelId = 1;
+
+select c.name as "channel name",v.name as "video name",ca.name as "category" from channel c, 
+video v, category ca , channelvideos chv where chv.channelId = c.channelId and 
+chv.videoId = v.videoId and v.categoryId = ca.categoryId order by c.name;
+
+
