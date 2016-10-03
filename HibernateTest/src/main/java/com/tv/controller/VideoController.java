@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +28,12 @@ public class VideoController {
 	@Autowired
 	private VideoService videoDaoService;
 
+	public VideoController(VideoService videoDaoService) {
+		this.videoDaoService = videoDaoService;
+	}
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String list(Model model) {
+	public String list(ModelMap model) {
 		List<Video> videos = videoDaoService.findAll();
 		log.info("selected " + videos.size() + " videos");
 		model.addAttribute("videos", videos);
@@ -37,7 +42,7 @@ public class VideoController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String video(@PathVariable("id") Long id, Model model) {
+	public String get(@PathVariable("id") Integer id, ModelMap model) {
 		Video video = videoDaoService.findById(id);
 		model.addAttribute("video", video);
 
@@ -65,14 +70,14 @@ public class VideoController {
 
 	@RequestMapping("/remov/{cid}")
 	public String remove(@PathVariable Integer vid) {
-		videoDaoService.delete(vid.longValue());
+		videoDaoService.delete(vid);
 
 		return "redirect:/videos.jsp";
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam("id") Integer id) {
-		Video video = videoDaoService.findById(id.longValue());
+		Video video = videoDaoService.findById(id);
 
 		ModelAndView mv = new ModelAndView("edit");
 

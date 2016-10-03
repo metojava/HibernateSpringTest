@@ -18,7 +18,7 @@ import com.tv.model.Video;
 @Service("channelDaoService")
 @Repository
 @Transactional
-public class ChannelDaoService implements ChannelService {
+public class ChannelDaoService implements ChannelService{
 
 	private Log log = LogFactory.getLog(ChannelDaoService.class);
 	@Autowired
@@ -30,6 +30,7 @@ public class ChannelDaoService implements ChannelService {
 		return channelDao.findAll();
 	}
 
+
 	@Override
 	public List<Video> findAllVideosByChannel(Integer id) {
 		Collection<Video> videos = channelDao.findAllVideosByChannel(id)
@@ -38,7 +39,7 @@ public class ChannelDaoService implements ChannelService {
 	}
 
 	@Override
-	public Channel findById(Long id) {
+	public Channel findById(Integer id) {
 
 		return channelDao.findById(id);
 	}
@@ -50,7 +51,7 @@ public class ChannelDaoService implements ChannelService {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(Integer id) {
 		channelDao.delete(id);
 
 	}
@@ -60,5 +61,7 @@ public class ChannelDaoService implements ChannelService {
 		
 		return channelDao.findAllVideosOfChannel();
 	}
+
+
 
 }

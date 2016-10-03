@@ -8,11 +8,11 @@ import com.tv.model.Video;
 public interface ChannelService {
 	public List<Channel> findAll();
 
-	public Channel findById(Long id);
+	public Channel findById(Integer id);
 
 	public Channel save(Channel channel);
 
-	public void delete(Long id);
+	public void delete(Integer id);
 
 	public List<Video> findAllVideosByChannel(Integer id);
 	

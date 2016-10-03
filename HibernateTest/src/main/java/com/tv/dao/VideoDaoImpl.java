@@ -31,7 +31,7 @@ public class VideoDaoImpl implements VideoDao {
 
 	@Transactional(readOnly = true)
 	@Override
-	public Video findById(Long id) {
+	public Video findById(Integer id) {
 		return (Video) sessionFactory.getCurrentSession()
 				.getNamedQuery("Video.findByVideoId")
 				.setParameter("videoId", id).uniqueResult();
@@ -46,7 +46,7 @@ public class VideoDaoImpl implements VideoDao {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(Integer id) {
 		sessionFactory.getCurrentSession().delete(id);
 
 	}

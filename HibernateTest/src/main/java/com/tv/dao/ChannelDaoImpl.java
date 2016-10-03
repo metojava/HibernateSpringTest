@@ -28,14 +28,6 @@ public class ChannelDaoImpl implements ChannelDao {
 	}
 
 	@Transactional(readOnly = true)
-	@Override
-	public Channel findById(Long id) {
-		return (Channel) sessionFactory.getCurrentSession()
-				.getNamedQuery("Channel.findByChannelId")
-				.setParameter("channelId", id).uniqueResult();
-	}
-
-	@Transactional(readOnly = true)
 	public Channel findAllVideosByChannel(Integer id) {
 
 		Channel channelWithVideos = (Channel) sessionFactory
@@ -53,17 +45,25 @@ public class ChannelDaoImpl implements ChannelDao {
 	}
 
 	@Override
-	public void delete(Long id) {
-		sessionFactory.getCurrentSession().delete(id);
+	public List<Channel> findAllVideosOfChannel() {
+		// Channel.findAllVideos
+		return sessionFactory.getCurrentSession()
+				.getNamedQuery("Channel.findAllVideos").list();
 
 	}
 
+	@Transactional(readOnly = true)
 	@Override
-	public List<Channel> findAllVideosOfChannel() {
-		//Channel.findAllVideos
-		return  sessionFactory.getCurrentSession()
-				.getNamedQuery("Channel.findAllVideos").list();
-	
+	public Channel findById(Integer id) {
+		return (Channel) sessionFactory.getCurrentSession()
+				.getNamedQuery("Channel.findByChannelId")
+				.setParameter("channelId", id).uniqueResult();
+	}
+
+	@Override
+	public void delete(Integer id) {
+		sessionFactory.getCurrentSession().delete(id);
+
 	}
 
 }
