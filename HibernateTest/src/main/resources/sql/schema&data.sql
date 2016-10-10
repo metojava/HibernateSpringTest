@@ -27,7 +27,6 @@ create table channel(
 
 channelId int not null auto_increment,
 name varchar(30) not null,
-videoId int default null, 
 primary key(channelId),
 constraint fk_channel_video foreign key(videoId)
 references television.video(videoId)
@@ -40,7 +39,6 @@ create table playlist(
 
 playlistId int not null auto_increment,
 name varchar(30) not null,
-videoId int default null,
 primary key(playlistId),
 constraint fk_playlist_video foreign key(videoId)
 references television.video(videoId)

@@ -28,7 +28,7 @@ public class VideoDaoService implements VideoService {
 	}
 
 	@Override
-	public Video findById(Long id) {
+	public Video findById(Integer id) {
 
 		return videoDao.findById(id);
 	}
@@ -40,7 +40,7 @@ public class VideoDaoService implements VideoService {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(Integer id) {
 		videoDao.delete(id);
 
 	}
