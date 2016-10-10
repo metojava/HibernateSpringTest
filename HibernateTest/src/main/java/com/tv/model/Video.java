@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.tv.model;
 
 import java.io.Serializable;
@@ -20,125 +15,144 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * 
+ *
  * @author User
  */
 @Entity
 @Table(name = "video")
 @XmlRootElement
 @NamedQueries({
-		@NamedQuery(name = "Video.findAll", query = "SELECT v FROM Video v"),
-		@NamedQuery(name = "Video.findAllByChannel", query = "SELECT distinct v FROM Video v left join fetch v.channelCollection"),
-		@NamedQuery(name = "Video.findByVideoId", query = "SELECT v FROM Video v WHERE v.videoId = :videoId"),
-		@NamedQuery(name = "Video.findByName", query = "SELECT v FROM Video v WHERE v.name = :name") })
+    @NamedQuery(name = "Video.findAll", query = "SELECT v FROM Video v"),
+    @NamedQuery(name = "Video.findByVideoId", query = "SELECT v FROM Video v WHERE v.videoId = :videoId"),
+    @NamedQuery(name = "Video.findByName", query = "SELECT v FROM Video v WHERE v.name = :name"),
+    @NamedQuery(name = "Video.findByDescription", query = "SELECT v FROM Video v WHERE v.description = :description"),
+    @NamedQuery(name = "Video.findByImage", query = "SELECT v FROM Video v WHERE v.image = :image")})
 public class Video implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Basic(optional = false)
-	@Column(name = "videoId")
-	private Integer videoId;
-	@Basic(optional = false)
-	@NotNull
-	@Size(min = 1, max = 30)
-	@Column(name = "name")
-	private String name;
-	@JoinTable(name = "channelvideos", joinColumns = { @JoinColumn(name = "videoId", referencedColumnName = "videoId") }, inverseJoinColumns = { @JoinColumn(name = "channelId", referencedColumnName = "channelId") })
-	@ManyToMany
-	private Collection<Channel> channelCollection;
-	@JoinTable(name = "playlistvideos", joinColumns = { @JoinColumn(name = "videoId", referencedColumnName = "videoId") }, inverseJoinColumns = { @JoinColumn(name = "playlistId", referencedColumnName = "playlistId") })
-	@ManyToMany
-	private Collection<Playlist> playlistCollection;
-	@JoinColumn(name = "categoryId", referencedColumnName = "categoryId")
-	@ManyToOne(optional = false)
-	private Category categoryId;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "videoId")
+    private Integer videoId;
+    @Basic(optional = false)
+    @Column(name = "name")
+    private String name;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "image")
+    private String image;
+    @JoinTable(name = "channelvideos", joinColumns = {
+        @JoinColumn(name = "videoId", referencedColumnName = "videoId")}, inverseJoinColumns = {
+        @JoinColumn(name = "channelId", referencedColumnName = "channelId")})
+    @ManyToMany
+    private Collection<Channel> channelCollection;
+    @JoinTable(name = "playlistvideos", joinColumns = {
+        @JoinColumn(name = "videoId", referencedColumnName = "videoId")}, inverseJoinColumns = {
+        @JoinColumn(name = "playlistId", referencedColumnName = "playlistId")})
+    @ManyToMany
+    private Collection<Playlist> playlistCollection;
+    @JoinColumn(name = "categoryId", referencedColumnName = "categoryId")
+    @ManyToOne(optional = false)
+    private Category categoryId;
 
-	public Video() {
-	}
+    public Video() {
+    }
 
-	public Video(Integer videoId) {
-		this.videoId = videoId;
-	}
+    public Video(Integer videoId) {
+        this.videoId = videoId;
+    }
 
-	public Video(Integer videoId, String name) {
-		this.videoId = videoId;
-		this.name = name;
-	}
+    public Video(Integer videoId, String name) {
+        this.videoId = videoId;
+        this.name = name;
+    }
 
-	public Integer getVideoId() {
-		return videoId;
-	}
+    public Integer getVideoId() {
+        return videoId;
+    }
 
-	public void setVideoId(Integer videoId) {
-		this.videoId = videoId;
-	}
+    public void setVideoId(Integer videoId) {
+        this.videoId = videoId;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@XmlTransient
-	public Collection<Channel> getChannelCollection() {
-		return channelCollection;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setChannelCollection(Collection<Channel> channelCollection) {
-		this.channelCollection = channelCollection;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@XmlTransient
-	public Collection<Playlist> getPlaylistCollection() {
-		return playlistCollection;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public void setPlaylistCollection(Collection<Playlist> playlistCollection) {
-		this.playlistCollection = playlistCollection;
-	}
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-	public Category getCategoryId() {
-		return categoryId;
-	}
+    @XmlTransient
+    public Collection<Channel> getChannelCollection() {
+        return channelCollection;
+    }
 
-	public void setCategoryId(Category categoryId) {
-		this.categoryId = categoryId;
-	}
+    public void setChannelCollection(Collection<Channel> channelCollection) {
+        this.channelCollection = channelCollection;
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (videoId != null ? videoId.hashCode() : 0);
-		return hash;
-	}
+    @XmlTransient
+    public Collection<Playlist> getPlaylistCollection() {
+        return playlistCollection;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are
-		// not set
-		if (!(object instanceof Video)) {
-			return false;
-		}
-		Video other = (Video) object;
-		if ((this.videoId == null && other.videoId != null)
-				|| (this.videoId != null && !this.videoId.equals(other.videoId))) {
-			return false;
-		}
-		return true;
-	}
+    public void setPlaylistCollection(Collection<Playlist> playlistCollection) {
+        this.playlistCollection = playlistCollection;
+    }
 
-	@Override
-	public String toString() {
-		return "com.tv.Video[ videoId=" + videoId + " ]";
-	}
+    public Category getCategoryId() {
+        return categoryId;
+    }
 
+    public void setCategoryId(Category categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (videoId != null ? videoId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Video)) {
+            return false;
+        }
+        Video other = (Video) object;
+        if ((this.videoId == null && other.videoId != null) || (this.videoId != null && !this.videoId.equals(other.videoId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.tv.model.Video[ videoId=" + videoId + " ]";
+    }
+    
 }

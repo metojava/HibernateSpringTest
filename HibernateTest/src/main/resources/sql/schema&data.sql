@@ -15,6 +15,8 @@ primary key(categoryId)
 create table video(
 videoId int not null auto_increment,
 name varchar(30) not null,
+description varchar(255),
+image varchar(40),
 categoryId int not null,
 primary key(videoId),
 constraint fk_video_category foreign key(categoryId)
@@ -38,6 +40,17 @@ name varchar(30) not null,
 primary key(playlistId)
 
 );
+
+create table user(
+userId int not null auto_increment,
+first_name varchar(30) not null,
+last_name varchar(30) not null,
+gender varchar(30) not null,
+
+primary key(userId)
+
+);
+
 
 create table playlistvideos(
 
@@ -77,10 +90,10 @@ insert into category values(2,"comedy");
 insert into category values(3,"historical");
 insert into category values(4,"adventure");
 
-insert into video values(1,"Bill Gates biography",3);
-insert into video values(2,"Tarzan",1);
-insert into video values(3,"Island of Diamonds",4);
-insert into video values(4,"Bill and diamonds",2);
+insert into video values(1,"Bill Gates biography","this video shows biography of Bill Gates","img/billgates.png",3);
+insert into video values(2,"Tarzan","good adventure of little boy which grew in forest with animals","img/tarzan.png",1);
+insert into video values(3,"Island of Diamonds","involving drama adventure historical video showing old times tresure on some island","img/island.png",4);
+insert into video values(4,"Bill and diamonds","comedy genre film which shows how many diamonds bill gathered in his life","img/bildiams.png",2);
 
 
 insert into channel values(1,"comedies");
