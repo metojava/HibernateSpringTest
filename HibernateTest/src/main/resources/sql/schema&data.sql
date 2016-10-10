@@ -27,11 +27,7 @@ create table channel(
 
 channelId int not null auto_increment,
 name varchar(30) not null,
-primary key(channelId),
-constraint fk_channel_video foreign key(videoId)
-references television.video(videoId)
-on delete cascade
-on update cascade
+primary key(channelId)
 
 );
 
@@ -39,11 +35,7 @@ create table playlist(
 
 playlistId int not null auto_increment,
 name varchar(30) not null,
-primary key(playlistId),
-constraint fk_playlist_video foreign key(videoId)
-references television.video(videoId)
-on delete cascade
-on update cascade
+primary key(playlistId)
 
 );
 
@@ -91,15 +83,15 @@ insert into video values(3,"Island of Diamonds",4);
 insert into video values(4,"Bill and diamonds",2);
 
 
-insert into channel values(1,"comedies",1);
-insert into channel values(2,"cartoon",2);
-insert into channel values(3,"scientific",3);
-insert into channel values(4,"movies",4);
+insert into channel values(1,"comedies");
+insert into channel values(2,"cartoon");
+insert into channel values(3,"scientific");
+insert into channel values(4,"movies");
 
 
-insert into playlist values(1,"Satishs playlist",4);
-insert into playlist values(2,"Jams's playlist",3);
-insert into playlist values(3,"Aruns playlist",4);
+insert into playlist values(1,"Satishs playlist");
+insert into playlist values(2,"Jams's playlist");
+insert into playlist values(3,"Aruns playlist");
 
 
 insert into playlistvideos values (1,1);

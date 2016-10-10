@@ -23,12 +23,8 @@
 		<property name="username" value="root" />
 		<property name="password" value="nbuser" />
 	</bean>
-<!-- 
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
- -->
+	<!-- <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"> 
+		<property name="sessionFactory" ref="sessionFactory" /> </bean> -->
 	<bean id="transactionManagerEmf" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="emf" />
 	</bean>
@@ -74,7 +70,10 @@
 
 	<jpa:repositories base-package="com.mycompany.repo"
 		entity-manager-factory-ref="emf" transaction-manager-ref="transactionManagerEmf" />
-	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
-		<property name="prefix" value="/WEB-INF/jsps/" /> <property name="suffix" 
-		value=".jsp" /> </bean> -->
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsps/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 </beans>
