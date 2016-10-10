@@ -49,9 +49,9 @@ public class VideoControllerTest {
 		ModelMap model = new ModelMap();
 		List<Video> videos = videoDaoService.findAll();
 		model.addAttribute("videos", videos);
-		String viewName = videoController.list(model);
+		ModelAndView viewName = videoController.list();
 		mockControl.verify();
-		assertEquals(viewName, "tv/videos");
+		assertEquals(viewName.getViewName(), "tv/videos");
 	}
 
 	@Test

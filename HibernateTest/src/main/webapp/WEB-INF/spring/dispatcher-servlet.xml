@@ -19,43 +19,49 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/affablebean" />
+		<property name="url" value="jdbc:mysql://localhost:3306/television" />
 		<property name="username" value="root" />
 		<property name="password" value="nbuser" />
 	</bean>
-	<!-- <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"> 
-		<property name="sessionFactory" ref="sessionFactory" /> </bean> -->
-	<bean id="transactionManagerEmf" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="emf" />
-	</bean>
 
-	<tx:annotation-driven transaction-manager="transactionManagerEmf" />
+	<!-- <bean id="transactionManagerEmf" class="org.springframework.orm.jpa.JpaTransactionManager"> 
+		<property name="entityManagerFactory" ref="emf" /> </bean> -->
 
 	<context:annotation-config />
-	<context:component-scan base-package="com.mycompany" />
+	<context:component-scan base-package="com.tv" />
 
 	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="com.mycompany.entities" />
+		<!-- <property name="annotatedClasses"> <list> <value>com.tv.model.Category</value> 
+			<value>com.tv.model.Channel</value> <value>com.tv.model.Playlist</value> 
+			<value>com.tv.model.Video</value> </list> </property> -->
+		<property name="packagesToScan" value="com.tv.model" />
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
 				<prop key="hibernate.max_fetch_depth">3</prop>
-				<prop key="hibernate.jdbc.fetch_size">50</prop>
-				<prop key="hibernate.jdbc.batch_size">10</prop>
+				<prop key="hibernate.jdbc.fetch_size">25</prop>
+				<prop key="hibernate.jdbc.batch_size">5</prop>
 				<prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>
 	</bean>
 
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
 	<bean id="emf"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
-		<property name="packagesToScan" value="com.mycompany.entities" />
+		<property name="packagesToScan" value="com.tv.model" />
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
@@ -68,8 +74,8 @@
 		</property>
 	</bean>
 
-	<jpa:repositories base-package="com.mycompany.repo"
-		entity-manager-factory-ref="emf" transaction-manager-ref="transactionManagerEmf" />
+	<jpa:repositories base-package="com.tv.repos"
+		entity-manager-factory-ref="emf" transaction-manager-ref="transactionManager" />
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

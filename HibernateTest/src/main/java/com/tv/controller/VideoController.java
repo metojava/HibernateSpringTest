@@ -2,11 +2,12 @@ package com.tv.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,17 +29,21 @@ public class VideoController {
 	@Autowired
 	private VideoService videoDaoService;
 
+	public VideoController() {
+	}
+
 	public VideoController(VideoService videoDaoService) {
 		this.videoDaoService = videoDaoService;
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String list(ModelMap model) {
+	public ModelAndView list() {
+		ModelAndView mv = new ModelAndView("tv/videos");
 		List<Video> videos = videoDaoService.findAll();
 		log.info("selected " + videos.size() + " videos");
-		model.addAttribute("videos", videos);
+		mv.addObject("videos", videos);
 
-		return "tv/videos";
+		return mv;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -58,7 +63,7 @@ public class VideoController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String save(@ModelAttribute Video video, BindingResult result) {
+	public String save(@ModelAttribute @Valid Video video, BindingResult result) {
 		if (!result.hasErrors()) {
 			videoDaoService.save(video);
 
