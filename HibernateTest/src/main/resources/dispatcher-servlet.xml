@@ -77,6 +77,9 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
+	<jpa:repositories base-package="com.tv.pageablerepos"
+		entity-manager-factory-ref="emf" transaction-manager-ref="transactionManager" />
+
 	<jpa:repositories base-package="com.tv.repos"
 		entity-manager-factory-ref="emf" transaction-manager-ref="transactionManager" />
 
