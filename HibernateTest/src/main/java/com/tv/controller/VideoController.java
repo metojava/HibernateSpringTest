@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tv.dao.services.VideoService;
 import com.tv.model.Video;
+import com.tv.pagableservices.VideoPagableService;
 
 @RequestMapping("/videos")
 @Controller
@@ -29,17 +31,39 @@ public class VideoController {
 	@Autowired
 	private VideoService videoDaoService;
 
+	@Autowired
+	private VideoPagableService videoPagableService;
+
 	public VideoController() {
 	}
 
-	public VideoController(VideoService videoDaoService) {
+	public VideoController(VideoService videoDaoService,
+			VideoPagableService videoPagableService) {
 		this.videoDaoService = videoDaoService;
+		this.videoPagableService = videoPagableService;
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView mv = new ModelAndView("tv/videos");
 		List<Video> videos = videoDaoService.findAll();
+		log.info("selected " + videos.size() + " videos");
+		mv.addObject("videos", videos);
+
+		return mv;
+	}
+
+	@RequestMapping(value = "/list/{start}/{end}/{asc}/{fieldName}", method = RequestMethod.GET)
+	public ModelAndView list(@PathVariable("start") Integer start,
+			@PathVariable("end") Integer end, @PathVariable("asc") Integer asc,
+			@PathVariable("fieldName") String fieldName) {
+		boolean ascen = false;
+		if (asc == 1)
+			ascen = true;
+		ModelAndView mv = new ModelAndView("tv/videos");
+		Page<Video> vids = videoPagableService.findAllinRange(start, end,
+				ascen, fieldName);
+		List<Video> videos = vids.getContent();
 		log.info("selected " + videos.size() + " videos");
 		mv.addObject("videos", videos);
 
